@@ -40,4 +40,20 @@ public class ProductService {
             return ProductResponse.convertProductToResponseDto(savedProduct);
         }
     }
+
+    public ProductResponse updateProduct(Long id, ProductRequest productRequest) {
+        Optional<Product> optionalProduct = productRepository.findById(id);
+        if(optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+            product.setName(productRequest.getName());
+            product.setDescription(productRequest.getDescription());
+            product.setPrice(productRequest.getPrice());
+            productRepository.save(product);
+
+            return ProductResponse.convertProductToResponseDto(product);
+
+        } else {
+            throw new IllegalArgumentException(String.format(String.format("Record with id: %d not found.", id)));
+        }
+    }
 }

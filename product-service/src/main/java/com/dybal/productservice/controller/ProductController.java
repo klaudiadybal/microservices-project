@@ -34,4 +34,12 @@ public class ProductController {
         return productService.createProduct(productRequest);
     }
 
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ProductResponse updateProduct(@PathVariable("id") Long id, @RequestBody ProductRequest productRequest){
+        return productService.updateProduct(id, productRequest);
+    }
+
+
+
 }
