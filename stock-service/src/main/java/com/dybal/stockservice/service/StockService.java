@@ -50,7 +50,15 @@ public class StockService {
     }
 
     public StockResponse updateStock(Long id, StockRequest stockRequest) {
+        String productName = stockRequest.getProductName();
+        Optional<Stock> optionalStockByName = stockRepository.findByProductName(productName);
+
+        if(optionalStockByName.isPresent() && !id.equals(optionalStockByName.get().getId())) {
+            throw new IllegalArgumentException(String.format("Product with name: %s already exists.", productName));
+        }
+
         Optional<Stock> optionalStock = stockRepository.findById(id);
+
         if(optionalStock.isPresent()) {
             Stock stock = optionalStock.get();
             stock.setProductName(stockRequest.getProductName());

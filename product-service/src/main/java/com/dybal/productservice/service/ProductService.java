@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -42,6 +43,13 @@ public class ProductService {
     }
 
     public ProductResponse updateProduct(Long id, ProductRequest productRequest) {
+        String name = productRequest.getName();
+        Optional<Product> optionalProductByName = productRepository.findByName(name);
+
+        if(optionalProductByName.isPresent() && !id.equals(optionalProductByName.get().getId())) {
+            throw new IllegalArgumentException((String.format("Product with name: %s already exists.", name)));
+        }
+
         Optional<Product> optionalProduct = productRepository.findById(id);
         if(optionalProduct.isPresent()) {
             Product product = optionalProduct.get();
