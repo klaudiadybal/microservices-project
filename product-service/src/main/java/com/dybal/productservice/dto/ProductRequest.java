@@ -26,12 +26,4 @@ public class ProductRequest {
                 .build();
     }
 
-    public static ProductRequest convertProductToRequestDto(Product product) {
-        return ProductRequest.builder()
-                .name(product.getName())
-                .description(product.getDescription())
-                .price(product.getPrice())
-                .build();
-    }
-
 }

@@ -53,7 +53,7 @@ public class ProductService {
             return ProductResponse.convertProductToResponseDto(product);
 
         } else {
-            throw new IllegalArgumentException(String.format(String.format("Record with id: %d not found.", id)));
+            throw new IllegalArgumentException(String.format("Record with id: %d not found.", id));
         }
     }
 
@@ -62,7 +62,7 @@ public class ProductService {
         if (product.isPresent()) {
             productRepository.deleteById(id);
         } else {
-            throw new IllegalArgumentException(String.format(String.format("Record with id: %d not found.", id)));
+            throw new IllegalArgumentException(String.format("Record with id: %d not found.", id));
         }
 
     }
