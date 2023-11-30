@@ -56,4 +56,14 @@ public class ProductService {
             throw new IllegalArgumentException(String.format(String.format("Record with id: %d not found.", id)));
         }
     }
+
+    public void deleteProduct(Long id) {
+        Optional<Product> product = productRepository.findById(id);
+        if (product.isPresent()) {
+            productRepository.deleteById(id);
+        } else {
+            throw new IllegalArgumentException(String.format(String.format("Record with id: %d not found.", id)));
+        }
+
+    }
 }

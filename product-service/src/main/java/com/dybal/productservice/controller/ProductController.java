@@ -40,6 +40,11 @@ public class ProductController {
         return productService.updateProduct(id, productRequest);
     }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteProduct(@PathVariable("id") Long id) {
+        productService.deleteProduct(id);
+    }
 
 
 }
