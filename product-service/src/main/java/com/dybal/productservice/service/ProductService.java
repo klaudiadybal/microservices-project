@@ -1,5 +1,6 @@
 package com.dybal.productservice.service;
 
+import com.dybal.productservice.dto.ProductRequest;
 import com.dybal.productservice.dto.ProductResponse;
 import com.dybal.productservice.model.Product;
 import com.dybal.productservice.repository.ProductRepository;
@@ -27,5 +28,16 @@ public class ProductService {
         return product
                 .map(ProductResponse::convertProductToResponseDto)
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Record with id: %d not found.", id)));
+    }
+
+    public ProductResponse createProduct(ProductRequest productRequest) {
+        String name = productRequest.getName();
+        if(productRepository.findByName(name).isPresent()) {
+            throw new IllegalArgumentException(String.format("Record with name: %s already exists.", name));
+        } else {
+            Product product = ProductRequest.convertRequestDtoToProduct(productRequest);
+            Product savedProduct = productRepository.save(product);
+            return ProductResponse.convertProductToResponseDto(savedProduct);
+        }
     }
 }

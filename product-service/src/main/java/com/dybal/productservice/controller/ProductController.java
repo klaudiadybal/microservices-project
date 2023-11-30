@@ -1,5 +1,6 @@
 package com.dybal.productservice.controller;
 
+import com.dybal.productservice.dto.ProductRequest;
 import com.dybal.productservice.dto.ProductResponse;
 import com.dybal.productservice.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,12 @@ public class ProductController {
     @ResponseStatus(HttpStatus.OK)
     public ProductResponse getProduct(@PathVariable("id") Long id) {
         return productService.getProduct(id);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ProductResponse createProduct(@RequestBody ProductRequest productRequest){
+        return productService.createProduct(productRequest);
     }
 
 }
