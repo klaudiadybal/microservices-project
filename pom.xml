@@ -10,7 +10,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>product-service</module>
-        <module>product-service</module>
+        <module>stock-service</module>
     </modules>
 
     <properties>
@@ -24,6 +24,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>3.2.0</version>
                 <configuration>
                     <excludes>
                         <exclude>
@@ -36,6 +37,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
                 <configuration>
                     <source>16</source>
                     <target>16</target>

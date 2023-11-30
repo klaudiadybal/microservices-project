@@ -1,6 +1,6 @@
-package com.dybal.productservice.exception;
+package com.dybal.stockservice.exception;
 
-import com.dybal.productservice.dto.ErrorResponseDto;
+import com.dybal.stockservice.dto.ErrorResponseDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
