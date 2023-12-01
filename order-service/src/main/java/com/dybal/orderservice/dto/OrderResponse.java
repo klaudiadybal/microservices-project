@@ -2,7 +2,6 @@ package com.dybal.orderservice.dto;
 
 
 import com.dybal.orderservice.model.Order;
-import com.dybal.orderservice.model.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +16,7 @@ import java.util.List;
 public class OrderResponse {
 
     private Long id;
-    private List<Product> products;
+    private List<String> products;
 
     public static OrderResponse convertOrderToOrderResponseDto (Order order) {
         return OrderResponse.builder()

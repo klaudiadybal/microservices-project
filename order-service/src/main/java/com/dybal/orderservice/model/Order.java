@@ -18,6 +18,6 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Product> products;
+//    @OneToMany(cascade = CascadeType.ALL)
+    private List<String> products;
 }
