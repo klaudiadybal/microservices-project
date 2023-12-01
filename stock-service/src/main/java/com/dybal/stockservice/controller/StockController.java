@@ -1,5 +1,6 @@
 package com.dybal.stockservice.controller;
 
+import com.dybal.stockservice.dto.ProductResponse;
 import com.dybal.stockservice.dto.StockRequest;
 import com.dybal.stockservice.dto.StockResponse;
 import com.dybal.stockservice.service.StockService;
@@ -45,7 +46,6 @@ public class StockController {
     public void deleteStock(@PathVariable("id") Long id) {
         stockService.deleteStock(id);
     }
-
 
 
 }

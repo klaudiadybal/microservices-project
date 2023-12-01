@@ -22,10 +22,16 @@ public class ProductController {
         return productService.getProducts();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ProductResponse getProduct(@PathVariable("id") Long id) {
         return productService.getProduct(id);
+    }
+
+    @GetMapping("/name/{name}")
+    @ResponseStatus(HttpStatus.OK)
+    public ProductResponse getProductByName(@PathVariable("name") String name){
+        return productService.getProductByName(name);
     }
 
     @PostMapping

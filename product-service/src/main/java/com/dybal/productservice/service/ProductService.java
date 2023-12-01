@@ -31,6 +31,15 @@ public class ProductService {
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Record with id: %d not found.", id)));
     }
 
+    public ProductResponse getProductByName(String name) {
+        Optional<Product> product = productRepository.findByName(name);
+
+            return product
+                    .map(ProductResponse::convertProductToResponseDto)
+                    .orElseThrow(() -> new IllegalArgumentException(String.format("Record with name: %s not found.", name)));
+
+    }
+
     public ProductResponse createProduct(ProductRequest productRequest) {
         String name = productRequest.getName();
         if(productRepository.findByName(name).isPresent()) {
@@ -74,4 +83,6 @@ public class ProductService {
         }
 
     }
+
+
 }
