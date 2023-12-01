@@ -40,4 +40,9 @@ public class OrderController {
         return orderService.updateOrder(id, orderRequest);
     }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteOrder(@PathVariable("id") Long id) {
+        orderService.deleteOrder(id);
+    }
 }

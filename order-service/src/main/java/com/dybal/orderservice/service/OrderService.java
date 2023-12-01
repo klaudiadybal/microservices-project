@@ -6,9 +6,12 @@ import com.dybal.orderservice.dto.ProductResponse;
 import com.dybal.orderservice.dto.StockResponse;
 import com.dybal.orderservice.model.Order;
 import com.dybal.orderservice.repository.OrderRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -21,6 +24,9 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final WebClient webClient;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public List<OrderResponse> getOrders() {
         return orderRepository.findAll()
@@ -75,6 +81,18 @@ public class OrderService {
 
     }
 
+    @Transactional
+    public void deleteOrder(Long id) {
+        Optional<Order> optionalOrder = orderRepository.findById(id);
+        Order order = optionalOrder
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Product with id: %d not found.", id)));
+
+        entityManager.createNativeQuery("DELETE FROM ORDERS_PRODUCTS WHERE ORDER_ID = :orderId")
+                .setParameter("orderId", id)
+                .executeUpdate();
+        orderRepository.deleteById(id);
+    }
+
 
     private void checkDoProductsExist(List<String> products) {
         products
@@ -123,6 +141,5 @@ public class OrderService {
                 })
                 .findFirst();
     }
-
 
 }
