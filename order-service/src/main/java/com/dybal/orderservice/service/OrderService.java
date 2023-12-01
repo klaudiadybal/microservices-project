@@ -39,6 +39,44 @@ public class OrderService {
     public OrderResponse createOrder(OrderRequest orderRequest) {
         List<String> products = orderRequest.getProducts();
 
+        checkDoProductsExist(products);
+
+        Optional<String> outOfStockProduct = findOutOfStockProduct(products);
+        boolean areInStock = outOfStockProduct.isEmpty();
+
+        if(areInStock) {
+            Order order = OrderRequest.convertOrderRequestDtoToOrder(orderRequest);
+            Order savedOrder = orderRepository.save(order);
+            return OrderResponse.convertOrderToOrderResponseDto(savedOrder);
+        } else {
+            throw new IllegalArgumentException(String.format("Product with name: %s is out of stock.", outOfStockProduct.get()));
+        }
+    }
+
+    public OrderResponse updateOrder(Long id, OrderRequest orderRequest) {
+        Optional<Order> orderOptional = orderRepository.findById(id);
+        if(orderOptional.isEmpty()) {
+            throw new IllegalArgumentException(String.format("Product with id: %d not found.", id));
+        }
+
+        Order order = orderOptional.get();
+        List<String> products = orderRequest.getProducts();
+        checkDoProductsExist(products);
+        Optional<String> outOfStockProduct = findOutOfStockProduct(products);
+        boolean areInStock = outOfStockProduct.isEmpty();
+
+        if(areInStock){
+            order.setProducts(orderRequest.getProducts());
+            Order savedOrder = orderRepository.save(order);
+            return OrderResponse.convertOrderToOrderResponseDto(savedOrder);
+        } else {
+            throw new IllegalArgumentException(String.format("Product with name: %s is out of stock.", outOfStockProduct.get()));
+        }
+
+    }
+
+
+    private void checkDoProductsExist(List<String> products) {
         products
                 .stream()
                 .forEach(name -> {
@@ -53,15 +91,16 @@ public class OrderService {
                             .retrieve()
                             .onStatus(HttpStatusCode::is4xxClientError, response ->
                                     Mono.error(new IllegalArgumentException(
-                                            String.format("Product with name: %s do not exists in products' database.", name))))
+                                            String.format("Product with name: %s do not exist in products' database.", name))))
                             .onStatus(HttpStatusCode::is5xxServerError, response ->
                                     Mono.error(new IllegalArgumentException("Error in product service")))
                             .bodyToMono(ProductResponse.class)
                             .block();
                 });
+    }
 
-        // checks is the product is in stock
-        Optional<String> outOfStockProduct = products
+    private Optional<String> findOutOfStockProduct(List<String> products) {
+        return products
                 .stream()
                 .filter(name -> {
                     StockResponse stockResponse = webClient.get()
@@ -83,14 +122,7 @@ public class OrderService {
                     return stockResponse != null && stockResponse.getQuantity() <= 0;
                 })
                 .findFirst();
-        boolean areInStock = outOfStockProduct.isEmpty();
-
-        if(areInStock) {
-            Order order = OrderRequest.convertOrderRequestDtoToOrder(orderRequest);
-            Order savedOrder = orderRepository.save(order);
-            return OrderResponse.convertOrderToOrderResponseDto(savedOrder);
-        } else {
-            throw new IllegalArgumentException(String.format("Product with name: %s is not in stock.", outOfStockProduct.get()));
-        }
     }
+
+
 }

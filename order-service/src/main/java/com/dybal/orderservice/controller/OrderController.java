@@ -34,4 +34,10 @@ public class OrderController {
         return  orderService.createOrder(orderRequest);
     }
 
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public OrderResponse updateOrder(@RequestBody OrderRequest orderRequest, @PathVariable("id") Long id) {
+        return orderService.updateOrder(id, orderRequest);
+    }
+
 }
