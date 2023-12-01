@@ -7,23 +7,17 @@ import com.dybal.stockservice.model.Stock;
 import com.dybal.stockservice.repository.StockRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 
-import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 //@Transactional
-@Slf4j
 public class StockService {
 
     private final StockRepository stockRepository;
@@ -32,7 +26,7 @@ public class StockService {
     public List<StockResponse> getStocks() {
         return stockRepository.findAll()
                 .stream()
-                .map(StockResponse::convertFromStockToStockResponseDto)
+                .map(StockResponse::convertStockToStockResponseDto)
                 .toList();
     }
 
@@ -40,7 +34,7 @@ public class StockService {
         Optional<Stock> optionalStock = stockRepository.findById(id);
         if(optionalStock.isPresent()){
             return optionalStock
-                    .map(StockResponse::convertFromStockToStockResponseDto)
+                    .map(StockResponse::convertStockToStockResponseDto)
                     .get();
         } else {
             throw new IllegalArgumentException(String.format("Record with id: %d not found.", id));
@@ -60,7 +54,7 @@ public class StockService {
 
         Stock stock = StockRequest.convertStockRequestDtoToStock(stockRequest);
         Stock savedStock = stockRepository.save(stock);
-        return StockResponse.convertFromStockToStockResponseDto(savedStock);
+        return StockResponse.convertStockToStockResponseDto(savedStock);
     }
 
     public StockResponse updateStock(Long id, StockRequest stockRequest) {
@@ -80,7 +74,7 @@ public class StockService {
             stock.setQuantity(stockRequest.getQuantity());
             Stock savedStock = stockRepository.save(stock);
 
-            return StockResponse.convertFromStockToStockResponseDto(savedStock);
+            return StockResponse.convertStockToStockResponseDto(savedStock);
 
         } else {
             throw new IllegalArgumentException(String.format("Record with id: %d not found.", id));

@@ -16,7 +16,7 @@ public class StockResponse {
     private String productName;
     private Long quantity;
 
-    public static StockResponse convertFromStockToStockResponseDto(Stock stock) {
+    public static StockResponse convertStockToStockResponseDto(Stock stock) {
         return StockResponse.builder().id(stock.getId())
                 .productName(stock.getProductName())
                 .quantity(stock.getQuantity())
