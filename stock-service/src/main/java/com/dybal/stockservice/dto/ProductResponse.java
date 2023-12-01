@@ -13,14 +13,11 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductResponse extends ErrorResponseDto{
+public class ProductResponse {
 
     private Long id;
     private String name;
     private String description;
     private BigDecimal price;
 
-    public ProductResponse(String apiPath, HttpStatus httpStatus, String errorMessage, LocalDateTime errorTime) {
-        super(apiPath, httpStatus, errorMessage, errorTime);
-    }
 }

@@ -56,25 +56,7 @@ public class StockService {
             throw new IllegalArgumentException(String.format("Record with name: %s already exists.", name));
         }
 
-        ProductResponse product = webClient.get()
-                .uri(uriBuilder ->
-                        uriBuilder
-                                .scheme("http")
-                                .host("localhost")
-                                .port(8080)
-                                .path("/api/products/name/{name}")
-                                .build(name))
-                .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, response ->
-                        Mono.error(new IllegalArgumentException("Product not found")))
-                .onStatus(HttpStatusCode::is5xxServerError, response ->
-                        Mono.error(new IllegalArgumentException("Error in product service")))
-                .bodyToMono(ProductResponse.class)
-                .block();
-
-        if (product == null || product.getName() == null || product.getName().isEmpty()) {
-            throw new IllegalArgumentException(String.format("Product with name: %s not found in product database", name));
-        }
+        getProductFromProductService(name);
 
         Stock stock = StockRequest.convertStockRequestDtoToStock(stockRequest);
         Stock savedStock = stockRepository.save(stock);
@@ -88,6 +70,7 @@ public class StockService {
         if(optionalStockByName.isPresent() && !id.equals(optionalStockByName.get().getId())) {
             throw new IllegalArgumentException(String.format("Product with name: %s already exists.", productName));
         }
+        getProductFromProductService(productName);
 
         Optional<Stock> optionalStock = stockRepository.findById(id);
 
@@ -111,6 +94,28 @@ public class StockService {
             stockRepository.deleteById(id);
         } else {
             throw new IllegalArgumentException(String.format("Record with id: %d not found.", id));
+        }
+    }
+
+    private void getProductFromProductService(String name) {
+        ProductResponse product = webClient.get()
+                .uri(uriBuilder ->
+                        uriBuilder
+                                .scheme("http")
+                                .host("localhost")
+                                .port(8080)
+                                .path("/api/products/name/{name}")
+                                .build(name))
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, response ->
+                        Mono.error(new IllegalArgumentException("Product not found")))
+                .onStatus(HttpStatusCode::is5xxServerError, response ->
+                        Mono.error(new IllegalArgumentException("Error in product service")))
+                .bodyToMono(ProductResponse.class)
+                .block();
+
+        if (product == null || product.getName() == null || product.getName().isEmpty()) {
+            throw new IllegalArgumentException(String.format("Product with name: %s not found in product database", name));
         }
     }
 }
