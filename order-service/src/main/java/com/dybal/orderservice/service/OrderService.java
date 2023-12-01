@@ -3,6 +3,7 @@ package com.dybal.orderservice.service;
 import com.dybal.orderservice.dto.OrderRequest;
 import com.dybal.orderservice.dto.OrderResponse;
 import com.dybal.orderservice.dto.ProductResponse;
+import com.dybal.orderservice.dto.StockResponse;
 import com.dybal.orderservice.model.Order;
 import com.dybal.orderservice.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,8 +39,6 @@ public class OrderService {
     public OrderResponse createOrder(OrderRequest orderRequest) {
         List<String> products = orderRequest.getProducts();
 
-
-        // chceck if products exists in product database
         products
                 .stream()
                 .forEach(name -> {
@@ -61,9 +60,37 @@ public class OrderService {
                             .block();
                 });
 
-        Order order = OrderRequest.convertOrderRequestDtoToOrder(orderRequest);
-        Order savedOrder = orderRepository.save(order);
+        // checks is the product is in stock
+        Optional<String> outOfStockProduct = products
+                .stream()
+                .filter(name -> {
+                    StockResponse stockResponse = webClient.get()
+                            .uri(uriBuilder ->
+                                    uriBuilder
+                                            .scheme("http")
+                                            .host("localhost")
+                                            .port(8081)
+                                            .path("/api/stocks/name/{name}")
+                                            .build(name))
+                            .retrieve()
+                            .onStatus(HttpStatusCode::is4xxClientError, response ->
+                                    Mono.error(new IllegalArgumentException(
+                                            String.format("Product with name: %s do not exist in stocks' database.", name))))
+                            .onStatus(HttpStatusCode::is5xxServerError, response ->
+                                    Mono.error(new IllegalArgumentException("Error in product service")))
+                            .bodyToMono(StockResponse.class)
+                            .block();
+                    return stockResponse != null && stockResponse.getQuantity() <= 0;
+                })
+                .findFirst();
+        boolean areInStock = outOfStockProduct.isEmpty();
 
-        return OrderResponse.convertOrderToOrderResponseDto(savedOrder);
+        if(areInStock) {
+            Order order = OrderRequest.convertOrderRequestDtoToOrder(orderRequest);
+            Order savedOrder = orderRepository.save(order);
+            return OrderResponse.convertOrderToOrderResponseDto(savedOrder);
+        } else {
+            throw new IllegalArgumentException(String.format("Product with name: %s is not in stock.", outOfStockProduct.get()));
+        }
     }
 }

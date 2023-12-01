@@ -39,6 +39,14 @@ public class StockService {
         } else {
             throw new IllegalArgumentException(String.format("Record with id: %d not found.", id));
         }
+    }
+
+    public StockResponse getStockByName(String name) {
+        Optional<Stock> stock = stockRepository.findByProductName(name);
+
+        return stock
+                .map(StockResponse::convertStockToStockResponseDto)
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Record with name: %s not found.", name)));
 
     }
 
@@ -112,4 +120,5 @@ public class StockService {
             throw new IllegalArgumentException(String.format("Product with name: %s not found in product database", name));
         }
     }
+
 }

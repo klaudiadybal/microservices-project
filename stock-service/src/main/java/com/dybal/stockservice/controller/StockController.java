@@ -23,10 +23,16 @@ public class StockController {
         return stockService.getStocks();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     @ResponseStatus(HttpStatus.OK)
     public StockResponse getStock(@PathVariable("id") Long id) {
         return stockService.getStock(id);
+    }
+
+    @GetMapping("/name/{name}")
+    @ResponseStatus(HttpStatus.OK)
+    public StockResponse getStockByName(@PathVariable("name") String name){
+        return stockService.getStockByName(name);
     }
 
     @PostMapping
