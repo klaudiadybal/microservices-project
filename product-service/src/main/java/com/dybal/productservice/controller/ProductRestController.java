@@ -2,7 +2,7 @@ package com.dybal.productservice.controller;
 
 import com.dybal.productservice.dto.ProductRequest;
 import com.dybal.productservice.dto.ProductResponse;
-import com.dybal.productservice.service.ProductService;
+import com.dybal.productservice.service.ProductRestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -12,44 +12,44 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
-public class ProductController {
+public class ProductRestController {
 
-    private final ProductService productService;
+    private final ProductRestService productRestService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<ProductResponse> getProducts() {
-        return productService.getProducts();
+        return productRestService.getProducts();
     }
 
     @GetMapping("/id/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ProductResponse getProduct(@PathVariable("id") Long id) {
-        return productService.getProduct(id);
+        return productRestService.getProduct(id);
     }
 
     @GetMapping("/name/{name}")
     @ResponseStatus(HttpStatus.OK)
     public ProductResponse getProductByName(@PathVariable("name") String name){
-        return productService.getProductByName(name);
+        return productRestService.getProductByName(name);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProductResponse createProduct(@RequestBody ProductRequest productRequest){
-        return productService.createProduct(productRequest);
+        return productRestService.createProduct(productRequest);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ProductResponse updateProduct(@PathVariable("id") Long id, @RequestBody ProductRequest productRequest){
-        return productService.updateProduct(id, productRequest);
+        return productRestService.updateProduct(id, productRequest);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteProduct(@PathVariable("id") Long id) {
-        productService.deleteProduct(id);
+        productRestService.deleteProduct(id);
     }
 
 

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Product Form</title>
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="container mt-5 w-50">
+            <h2>Product Form</h2>
+            <hr>
+            <form action="#" th:action="@{/products/save}" th:object="${product}" method="post">
+                <input type="hidden" th:value="${product.id}"/>
+                <div class="mb-3">
+                    <input type="text" th:field="${product.name}" class="form-control" id="name" placeholder="Name" th:errorclass="is-invalid"/>
+                    <div id="nameValidation" class="invalid-feedback" th:errors="${product.name}"></div>
+                </div>
+                <div class="mb-3">
+                    <input type="text" th:field="${product.description}" class="form-control" id="description" placeholder="Description" th:errorclass="is-invalid"/>
+                    <div id="descriptionValidation" class="invalid-feedback" th:errors="${product.description}"></div>
+                </div>
+                <div class="mb-3">
+                    <input type="text" th:field="${product.price}" class="form-control" id="price" placeholder="Price" th:errorclass="is-invalid"/>
+                    <div id="priceValidation" class="invalid-feedback" th:errors="${product.price}"></div>
+                </div>
+                <button type="submit" class="my-3 btn btn-primary btn-dark">Submit</button>
+                <a th:href="@{/products/list}" class="btn btn-primary btn-dark">Back to Products List</a>
+            </form>
+        </div>
+
+    </body>
+</html>

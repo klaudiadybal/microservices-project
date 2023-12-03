@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ProductService {
+public class ProductRestService {
 
     private final ProductRepository productRepository;
 
@@ -48,6 +48,12 @@ public class ProductService {
             Product savedProduct = productRepository.save(product);
             return ProductResponse.convertProductToResponseDto(savedProduct);
         }
+    }
+
+
+    public ProductResponse createProduct(Product product) {
+        Product savedProduct = productRepository.save(product);
+        return ProductResponse.convertProductToResponseDto(savedProduct);
     }
 
     public ProductResponse updateProduct(Long id, ProductRequest productRequest) {

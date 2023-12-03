@@ -27,4 +27,13 @@ public class ProductResponse {
                 .price(product.getPrice())
                 .build();
     }
+
+    public static Product convertResponseDtoToProduct(ProductResponse productResponse){
+        return Product.builder()
+                .id(productResponse.getId())
+                .name(productResponse.getName())
+                .description(productResponse.getDescription())
+                .price(productResponse.getPrice())
+                .build();
+    }
 }
