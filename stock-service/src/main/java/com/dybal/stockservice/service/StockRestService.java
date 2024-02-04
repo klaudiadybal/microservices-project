@@ -6,7 +6,6 @@ import com.dybal.stockservice.dto.StockResponse;
 import com.dybal.stockservice.model.Stock;
 import com.dybal.stockservice.repository.StockRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -18,7 +17,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 //@Transactional
-public class StockService {
+public class StockRestService {
 
     private final StockRepository stockRepository;
     private final WebClient webClient;

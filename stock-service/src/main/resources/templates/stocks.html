@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+    <title>Stocks Database</title>
+</head>
+
+<body>
+<div class="container">
+    <h1 class="my-4">Stocks Database</h1>
+    <hr>
+    <div class="table-responsive my-4">
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Product name</th>
+                <th>Quantity</th>
+                <th>Edit</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="stock : ${stocks}">
+                <td th:text="${stock.id}"></td>
+                <td th:text="${stock.productName}"></td>
+                <td th:text="${stock.quantity}"></td>
+                <td>
+                    <a th:href="@{/stocks/updateForm(id=${stock.id})}" class="btn btn-primary btn-sm btn-dark mb-3">Update</a>
+                    <a th:href="@{/stocks/delete(id=${stock.id})}" class="btn btn-primary btn-sm btn-danger mb-3">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <a th:href="@{/stocks/saveForm}" class="btn btn-primary btn-sm btn-dark mb-3">Add</a>
+    </div>
+</div>
+
+</body>
+
+</html>

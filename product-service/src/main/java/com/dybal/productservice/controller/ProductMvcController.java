@@ -36,7 +36,7 @@ public class ProductMvcController {
     public String saveOrUpdateProduct(@Valid @ModelAttribute("product") Product product, Errors errors) {
         if (!errors.hasErrors()) {
             if (product.getId() != null) {
-                productService.updateProduct(product); // Call updateProduct method
+                productService.updateProduct(product);
             } else {
                 productService.createProduct(product);
             }
@@ -54,7 +54,7 @@ public class ProductMvcController {
     }
 
     @GetMapping("/delete")
-    public String deleteStudent(@RequestParam("id") Long id){
+    public String deleteProduct(@RequestParam("id") Long id){
         productService.deleteProduct(id);
         return "redirect:/products/list";
     }

@@ -1,9 +1,8 @@
 package com.dybal.stockservice.controller;
 
-import com.dybal.stockservice.dto.ProductResponse;
 import com.dybal.stockservice.dto.StockRequest;
 import com.dybal.stockservice.dto.StockResponse;
-import com.dybal.stockservice.service.StockService;
+import com.dybal.stockservice.service.StockRestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +12,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/stocks")
 @RequiredArgsConstructor
-public class StockController {
+public class StockRestController {
 
-    private final StockService stockService;
+    private final StockRestService stockService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
