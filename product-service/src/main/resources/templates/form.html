@@ -12,7 +12,7 @@
             <h2>Product Form</h2>
             <hr>
             <form action="#" th:action="@{/products/save}" th:object="${product}" method="post">
-                <input type="hidden" th:value="${product.id}"/>
+                <input type="hidden" th:field="${product.id}"/>
                 <div class="mb-3">
                     <input type="text" th:field="${product.name}" class="form-control" id="name" placeholder="Name" th:errorclass="is-invalid"/>
                     <div id="nameValidation" class="invalid-feedback" th:errors="${product.name}"></div>

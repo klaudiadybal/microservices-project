@@ -33,9 +33,13 @@ public class ProductMvcController {
     }
 
     @PostMapping("/save")
-    public String saveStudent(@Valid @ModelAttribute("product") Product product, Errors errors){
-        if(!errors.hasErrors()){
-            productService.createProduct(product);
+    public String saveOrUpdateProduct(@Valid @ModelAttribute("product") Product product, Errors errors) {
+        if (!errors.hasErrors()) {
+            if (product.getId() != null) {
+                productService.updateProduct(product); // Call updateProduct method
+            } else {
+                productService.createProduct(product);
+            }
             return "redirect:/products/list";
         }
         return "form";
@@ -44,6 +48,7 @@ public class ProductMvcController {
     @GetMapping("/updateForm")
     public String showUpdateForm(@RequestParam("id") Long id, Model model){
         Product product = productService.getProduct(id);
+
         model.addAttribute("product", product);
         return "form";
     }
