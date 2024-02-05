@@ -4,8 +4,7 @@
 
 Projekt został stworzony na bazie trzech mikroserwisów: product-service, stock-service oraz order-service.
 Serwis produktów zarządza bazą danych produktów dostępnych do zakupu w sklepie. Serwis magazynu zarządza ilością
-dostępnych produktów w magazynie. Serwis zamówień komunikuje się z pozostałymi serwisami w celu utworzenia pary 
-produkt : ilość, przechowuje produkty i ich ilości w jednym obiekcie zamówienia.
+dostępnych produktów w magazynie. Serwis zamówień komunikuje się z pozostałymi serwisami w celu utworzenia zamówienia.
 
 ## Testowanie
 
@@ -109,7 +108,7 @@ typu stock znajdują się w bazie danych.
 ![img_11.png](images/img_11.png)
 
 Endpoint zwraca informacje o produktach znajdujących się w bazie danych w połączeniu 
-z ich ilością dostępna w bazie danych.
+z ich ilością dostępną w magazynie.
 
 Status: 200 OK.
 
@@ -140,7 +139,7 @@ Status: 200 OK.
 Aplikacja uruchamiana jest na porcie 8082.
 Order - service komunikuje się z product - service, aby sprawdzić, czy produkt dodawany w obiekcie order
 znajduje się w bazie danych produktów. Order - service komunikuje się również ze stock - service, aby sprawdzić, czy 
-produkty są dostępne.
+produkty są dostępne w magazynie.
 
 ### GET /api/orders
 
@@ -156,7 +155,7 @@ produkty są dostępne.
 
 ### PUT /api/orders/{id}
 
-![img_26.png](images/img_26.png)
+![img_29.png](images/img_29.png)
 
 ### DELETE /api/orders/{id}
 
@@ -171,6 +170,10 @@ Status: 200 OK
 ### Próba zaktualizowania na produkt, którego quantity wynosi 0:
 
 ![img_28.png](images/img_28.png)
+
+### Próba dodania produktu, który nie istnieje w bazie danych produktów:
+
+![img_30.png](images/img_30.png)
 
 ## Dodatkowe funkcjonalności
 
