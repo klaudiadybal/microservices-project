@@ -2,7 +2,7 @@ package com.dybal.orderservice.controller;
 
 import com.dybal.orderservice.dto.OrderRequest;
 import com.dybal.orderservice.dto.OrderResponse;
-import com.dybal.orderservice.service.OrderService;
+import com.dybal.orderservice.service.OrderRestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +12,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/orders")
 @RequiredArgsConstructor
-public class OrderController {
+public class OrderRestController {
 
-    private final OrderService orderService;
+    private final OrderRestService orderService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

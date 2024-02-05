@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class OrderService {
+public class OrderRestService {
 
     private final OrderRepository orderRepository;
     private final WebClient webClient;
